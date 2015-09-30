@@ -17,6 +17,7 @@ typedef void (^LoadingImageBlock)(CGFloat percent);
 }
 
 -(void)setUrl:(NSString*)url;
+-(void)setUrl:(NSString *)url placeHolderImage:(UIImage*)placeImage;
 -(void)setUrl:(NSString *)url LoadingBlock:(LoadingImageBlock)block;
 
 @end

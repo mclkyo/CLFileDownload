@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>5CD4EFE2-1433-4521-BAE6-8FA4F044B3FA</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>FileDownloadDemo</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>811C769D6E519EE64B98267860BAA6E78EBDC68B</key>
 		<string>https://github.com/mclkyo/CLFileDownload.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>FileDownloadDemo/FileDownloadDemo.xcodeproj/project.xcworkspace</string>
+	<string>FileDownloadDemo/FileDownloadDemo.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>811C769D6E519EE64B98267860BAA6E78EBDC68B</key>

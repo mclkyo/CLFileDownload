@@ -19,7 +19,19 @@ static char LoadingBlockKey;
     CLImageManager *manager = [CLImageManager shareImageManager];
     
     // Remove in progress downloader from queue
-    [manager cancelForDelegate:self];    
+    [manager cancelForDelegate:self];
+    self.image = nil;
+    [manager downloadWithUrl:url ManagerDelegate:self];
+}
+
+
+-(void)setUrl:(NSString *)url placeHolderImage:(UIImage *)placeImage{
+    
+    CLImageManager *manager = [CLImageManager shareImageManager];
+    
+    // Remove in progress downloader from queue
+    [manager cancelForDelegate:self];
+    self.image = placeImage;
     [manager downloadWithUrl:url ManagerDelegate:self];
 }
 

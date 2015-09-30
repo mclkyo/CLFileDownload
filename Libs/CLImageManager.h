@@ -18,6 +18,9 @@
     NSMutableDictionary *downloadUrls;
     NSMutableArray *downloaders;
     NSMutableArray *downloadFileData;
+    
+    NSMutableArray *cacheDelegates;
+    NSMutableArray *cacheURLs;
 }
 
 

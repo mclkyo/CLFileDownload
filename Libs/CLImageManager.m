@@ -36,6 +36,8 @@ static CLImageManager *instance;
         downloadUrls = [[NSMutableDictionary alloc]init];
         downloaders = [[NSMutableArray alloc]init];
         downloadFileData = [[NSMutableArray alloc]init];
+        cacheDelegates = [[NSMutableArray alloc] init];
+        cacheURLs = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -54,8 +56,25 @@ static CLImageManager *instance;
     return NSNotFound;
 }
 
+- (NSUInteger)indexOfDelegate:(id<CLImageManagerDelegate>)delegate waitingForURL:(NSString *)url
+{
+    // Do a linear search, simple (even if inefficient)
+    NSUInteger idx;
+    for (idx = 0; idx < [cacheDelegates count]; idx++)
+    {
+        if ([cacheDelegates objectAtIndex:idx] == delegate && [[cacheURLs objectAtIndex:idx] isEqual:url])
+        {
+            return idx;
+        }
+    }
+    return NSNotFound;
+}
+
 
 -(void)downloadWithUrl:(NSString *)url ManagerDelegate:(id<CLImageManagerDelegate>)delegate{
+    
+    [cacheDelegates addObject:delegate];
+    [cacheURLs addObject:url];
     
     FileData *data = [[FileData alloc]initWithUrl:url];
     CLFileCache *cache = [CLFileCache sharedImageCache];
@@ -73,7 +92,13 @@ static CLImageManager *instance;
 -(void)cancelForDelegate:(id<CLImageManagerDelegate>)delegate{
 
     NSUInteger idx;
-    
+ 
+    while ((idx = [cacheDelegates indexOfObjectIdenticalTo:delegate]) != NSNotFound)
+    {
+        [cacheDelegates removeObjectAtIndex:idx];
+        [cacheURLs removeObjectAtIndex:idx];
+    }
+
     
  
     while ((idx = [downloadDelegates indexOfObjectIdenticalTo:delegate]) != NSNotFound)
@@ -119,6 +144,8 @@ static CLImageManager *instance;
 }
 
 -(void)fileDownloader:(CLFileDownload *)download didFinish:(NSData *)data{
+    
+    
     
     for (NSInteger idx = (NSInteger)[downloaders count] - 1; idx >= 0; idx--)
     {
@@ -170,6 +197,19 @@ static CLImageManager *instance;
 
 -(void)CLFileCache:(CLFileCache *)cache ImageDidFound:(UIImage *)image downloadInfo:(NSDictionary *)info{
     id<CLImageManagerDelegate> delegate = [info objectForKey:@"delegate"];
+    
+    FileData *filedata = [info objectForKey:@"filedata"];
+    
+    NSUInteger idx = [self indexOfDelegate:delegate waitingForURL:filedata.Url];
+    if (idx == NSNotFound)
+    {
+        // Request has since been canceled
+        return;
+    }
+    
+    [cacheDelegates removeObjectAtIndex:idx];
+    [cacheURLs removeObjectAtIndex:idx];
+    
     if([delegate respondsToSelector:@selector(loadImageDidFisish:FinishImage:)]){
         [delegate loadImageDidFisish:self FinishImage:image];
     }
@@ -177,6 +217,18 @@ static CLImageManager *instance;
 
 -(void)CLFileCache:(CLFileCache *)cache ImageDidNotFound:(FileData *)data downloadInfo:(NSDictionary *)info{
     id<CLImageManagerDelegate> delegate = [info objectForKey:@"delegate"];
+    
+    
+    NSUInteger idx = [self indexOfDelegate:delegate waitingForURL:data.Url];
+    if (idx == NSNotFound)
+    {
+        // Request has since been canceled
+        return;
+    }
+    
+    
+    [cacheDelegates removeObjectAtIndex:idx];
+    [cacheURLs removeObjectAtIndex:idx];
     
     // Share the same downloader for identical URLs so we don't download the same URL several times
     CLFileDownload *downloader = [downloadUrls objectForKey:data.Url];

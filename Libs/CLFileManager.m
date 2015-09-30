@@ -30,6 +30,8 @@ static CLFileManager *instance;
         downloadUrls = [[NSMutableDictionary alloc]init];
         downloaders = [[NSMutableArray alloc]init];
         downloadFileData = [[NSMutableArray alloc]init];
+        cacheDelegates = [[NSMutableArray alloc] init];
+        cacheURLs = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -58,6 +60,9 @@ static CLFileManager *instance;
 
 -(void)downloadWithUrl:(NSString *)url ManagerDelegate:(id<CLFileManagerDelegate>)delegate{
     
+    [cacheDelegates addObject:delegate];
+    [cacheURLs addObject:url];
+    
     FileData *data = [[FileData alloc]initWithUrl:url];
     CLFileCache *cache = [CLFileCache sharedFileCache];
     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -69,11 +74,31 @@ static CLFileManager *instance;
     
 }
 
+- (NSUInteger)indexOfDelegate:(id<CLFileManagerDelegate>)delegate waitingForURL:(NSString *)url
+{
+    // Do a linear search, simple (even if inefficient)
+    NSUInteger idx;
+    for (idx = 0; idx < [cacheDelegates count]; idx++)
+    {
+        if ([cacheDelegates objectAtIndex:idx] == delegate && [[cacheURLs objectAtIndex:idx] isEqual:url])
+        {
+            return idx;
+        }
+    }
+    return NSNotFound;
+}
+
 
 -(void)cancelForDelegate:(id<CLFileManagerDelegate>)delegate{
     
     NSUInteger idx;
     
+    while ((idx = [cacheDelegates indexOfObjectIdenticalTo:delegate]) != NSNotFound)
+    {
+        [cacheDelegates removeObjectAtIndex:idx];
+        [cacheURLs removeObjectAtIndex:idx];
+    }
+
     
     while ((idx = [downloadDelegates indexOfObjectIdenticalTo:delegate]) != NSNotFound)
     {
@@ -176,13 +201,27 @@ static CLFileManager *instance;
 #pragma mark FileCache Delegate
 
 -(void)CLFileCache:(CLFileCache *)cache FileDidFound:(NSData *)data downloadInfo:(NSDictionary *)info{
+    
     id<CLFileManagerDelegate> delegate = [info objectForKey:@"delegate"];
+    FileData *filedata = [info objectForKey:@"filedata"];
+    
+    NSUInteger idx = [self indexOfDelegate:delegate waitingForURL:filedata.Url];
+    if (idx == NSNotFound)
+    {
+        // Request has since been canceled
+        return;
+    }
+    
+    [cacheDelegates removeObjectAtIndex:idx];
+    [cacheURLs removeObjectAtIndex:idx];
+    
+    
     if([delegate respondsToSelector:@selector(loadFileDidFisish:FinishFile:)]){
         [delegate loadFileDidFisish:self FinishFile:data];
     }
     
     if([delegate respondsToSelector:@selector(loadFileDidFisish:FinishFileUrl:)]){
-        FileData *filedata = [info objectForKey:@"filedata"];
+    
         NSString *FileUrl = [[CLFileCache sharedFileCache] getSavePath:filedata.Key];
         [delegate loadFileDidFisish:self FinishFileUrl:FileUrl];
     }
@@ -191,6 +230,18 @@ static CLFileManager *instance;
 
 -(void)CLFileCache:(CLFileCache *)cache FileDidNotFound:(FileData *)data downloadInfo:(NSDictionary *)info{
     id<CLFileManagerDelegate> delegate = [info objectForKey:@"delegate"];
+    
+    NSUInteger idx = [self indexOfDelegate:delegate waitingForURL:data.Url];
+    if (idx == NSNotFound)
+    {
+        // Request has since been canceled
+        return;
+    }
+    
+    
+    [cacheDelegates removeObjectAtIndex:idx];
+    [cacheURLs removeObjectAtIndex:idx];
+
     
     // Share the same downloader for identical URLs so we don't download the same URL several times
     CLFileDownload *downloader = [downloadUrls objectForKey:data.Url];

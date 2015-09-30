@@ -35,6 +35,9 @@
     [DataSource addObject:@"http://mm.xmeise.com/uploads/allimg/150925/1-150925203227.jpg"];
     [DataSource addObject:@"http://mm.xmeise.com/uploads/allimg/150925/1-150925203109.jpg"];
     
+
+
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -54,6 +57,19 @@
     return DataSource.count;
 }
 
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(self.mCell==nil){
+        self.mCell = [tableView dequeueReusableCellWithIdentifier:@"MultiImage"];
+    }
+    
+    NSString *index = [DataSource objectAtIndex:indexPath.row];
+    [self.mCell SetDownloadUrl:index];
+
+    CGSize size =  [self.mCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    NSLog(@"%ld:%@",indexPath.row,NSStringFromCGSize(size));
+    return 1  + size.height;
+}
 
 
 /*

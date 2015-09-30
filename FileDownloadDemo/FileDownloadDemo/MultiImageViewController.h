@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+@class MultiImageCell;
 
 @interface MultiImageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
+@property(nonatomic,strong)MultiImageCell *mCell;
 
 @end
 
