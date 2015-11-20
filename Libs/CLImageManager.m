@@ -83,7 +83,6 @@ static CLImageManager *instance;
                           data , @"filedata",
                           nil];
     
-    
     [cache queryDiskImageCache:data Result:self downloadInfo:info];
     
 }

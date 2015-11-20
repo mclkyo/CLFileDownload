@@ -11,6 +11,7 @@
 #import "CLImageManagerDelegate.h"
 
 typedef void (^LoadingImageBlock)(CGFloat percent);
+typedef void (^LoadSuccess)();
 
 @interface UIImageView (Cache) <CLImageManagerDelegate>{
     
@@ -19,5 +20,7 @@ typedef void (^LoadingImageBlock)(CGFloat percent);
 -(void)setUrl:(NSString*)url;
 -(void)setUrl:(NSString *)url placeHolderImage:(UIImage*)placeImage;
 -(void)setUrl:(NSString *)url LoadingBlock:(LoadingImageBlock)block;
+-(void)setUrl:(NSString *)url SuccessBlock:(LoadSuccess)block;
+
 
 @end

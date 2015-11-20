@@ -31,6 +31,7 @@ typedef void (^StoreFileCallback)();
 -(void)storeFile:(FileData*)filedata DownloadFile:(NSData*)data;
 -(void)storeFile:(FileData *)filedata DownloadFile:(NSData *)data Callback:(StoreFileCallback)callback;;
 
--(NSString*)getSavePath:(NSString*)key;
+
+-(NSString*)getSavePathWithFileData:(FileData*)fileData;
 
 @end

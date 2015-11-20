@@ -10,6 +10,7 @@
 #import <objc/runtime.h>
 
 static char LoadingBlockKey;
+static char SuccessBlockKey;
 
 @implementation UIImageView(Cache)
 
@@ -36,6 +37,20 @@ static char LoadingBlockKey;
 }
 
 
+
+-(void)setUrl:(NSString *)url SuccessBlock:(LoadSuccess)block{
+    CLImageManager *manager = [CLImageManager shareImageManager];
+    
+    // Remove in progress downloader from queue
+    [manager cancelForDelegate:self];
+    self.image = nil;
+    [manager downloadWithUrl:url ManagerDelegate:self];
+    
+    objc_setAssociatedObject(self, &SuccessBlockKey, block, OBJC_ASSOCIATION_COPY);
+    
+}
+
+
 -(void)setUrl:(NSString *)url LoadingBlock:(LoadingImageBlock)block{
     
     CLImageManager *manager = [CLImageManager shareImageManager];
@@ -54,6 +69,11 @@ static char LoadingBlockKey;
 
 -(void)loadImageDidFisish:(CLImageManager *)manager FinishImage:(UIImage *)image{
     self.image = image;
+    LoadSuccess block = objc_getAssociatedObject(self, &SuccessBlockKey);
+    if(block!=nil){
+        block();
+    }
+
 }
 
 -(void)loadImageFail:(CLImageManager *)manager Error:(NSError *)error{

@@ -20,7 +20,21 @@
     // Do any additional setup after loading the view.
     
     
-    [self.ToDownloadImage setUrl:@"http://mm.xmeise.com/uploads/allimg/150923/1-150923195529.jpg"];
+//    [self.ToDownloadImage setUrl:@"http://mm.xmeise.com/uploads/allimg/150926/1-1509261I003.jpg" SuccessBlock:^{
+//        //[self.ToDownloadImage updateConstraintsIfNeeded];
+//        
+//    }];
+    
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *diskCachePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"CLFileCache"];
+    NSString *picUrl = [diskCachePath stringByAppendingPathComponent:@"1.jpg"];
+    
+    [self.ToDownloadImage setUrl:picUrl SuccessBlock:^{
+        //[self.ToDownloadImage updateConstraintsIfNeeded];
+        
+    }];
+    
 }
 
 - (void)didReceiveMemoryWarning {

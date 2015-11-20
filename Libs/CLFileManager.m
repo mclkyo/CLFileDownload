@@ -162,7 +162,7 @@ static CLFileManager *instance;
                 }
                 
                 if([delegate respondsToSelector:@selector(loadFileDidFisish:FinishFileUrl:)]){
-                    NSString *FileUrl = [[CLFileCache sharedFileCache] getSavePath:filedata.Key];
+                    NSString *FileUrl = [[CLFileCache sharedFileCache] getSavePathWithFileData:filedata];
                     [delegate loadFileDidFisish:self FinishFileUrl:FileUrl];
                 }
                 
@@ -222,7 +222,7 @@ static CLFileManager *instance;
     
     if([delegate respondsToSelector:@selector(loadFileDidFisish:FinishFileUrl:)]){
     
-        NSString *FileUrl = [[CLFileCache sharedFileCache] getSavePath:filedata.Key];
+        NSString *FileUrl = [[CLFileCache sharedFileCache] getSavePathWithFileData:filedata];
         [delegate loadFileDidFisish:self FinishFileUrl:FileUrl];
     }
     

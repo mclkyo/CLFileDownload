@@ -89,10 +89,20 @@ static CLFileCache *FileInstance;
     return self;
 }
 
+
 -(NSString*)getSavePath:(NSString*)key{
     return [diskCachePath stringByAppendingPathComponent:key];
 }
 
+
+-(NSString*)getSavePathWithFileData:(FileData *)fileData{
+    if([[fileData.Url lowercaseString]  hasPrefix:@"http://"] || [[fileData.Url lowercaseString]  hasPrefix:@"https://"]){
+        return [diskCachePath stringByAppendingPathComponent:fileData.Key];
+    }
+    else{
+        return fileData.Url;
+    }
+}
 
 
 -(void)storeKeyWithDataToDisk:(FileData *)filedata{
@@ -124,7 +134,7 @@ static CLFileCache *FileInstance;
     
     [cacheOutQueue addOperationWithBlock:^{
         
-        UIImage *imageOnDisk = [UIImage imageWithData:[NSData dataWithContentsOfFile:[self getSavePath:filedata.Key]]];
+        UIImage *imageOnDisk = [UIImage imageWithData:[NSData dataWithContentsOfFile:[self getSavePathWithFileData:filedata]]];
         NSMutableDictionary *result = [[NSMutableDictionary alloc]init];
         [result setObject:filedata forKey:@"FileData"];
         if(imageOnDisk!=nil)
@@ -161,7 +171,7 @@ static CLFileCache *FileInstance;
 
 -(void)queryDiskFileCache:(FileData *)filedata Result:(id<CLFileCacheDelegate>)delegate downloadInfo:(NSDictionary *)info{
     
-    NSData *FileData = [NSData dataWithContentsOfFile:[self getSavePath:filedata.Key]];
+    NSData *FileData = [NSData dataWithContentsOfFile:[self getSavePathWithFileData:filedata]];
     if(FileData != nil){
         
         if([delegate respondsToSelector:@selector(CLFileCache:FileDidFound:downloadInfo:)]){
