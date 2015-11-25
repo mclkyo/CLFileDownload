@@ -17,6 +17,9 @@ static char SuccessBlockKey;
 
 
 -(void)setUrl:(NSString *)url{
+    if(url==nil || url.length == 0)
+        return;
+    
     CLImageManager *manager = [CLImageManager shareImageManager];
     
     // Remove in progress downloader from queue
@@ -27,23 +30,28 @@ static char SuccessBlockKey;
 
 
 -(void)setUrl:(NSString *)url placeHolderImage:(UIImage *)placeImage{
+    self.image = placeImage;
+    
+    if(url==nil || url.length == 0)
+        return;
     
     CLImageManager *manager = [CLImageManager shareImageManager];
-    
     // Remove in progress downloader from queue
     [manager cancelForDelegate:self];
-    self.image = placeImage;
     [manager downloadWithUrl:url ManagerDelegate:self];
 }
 
 
 
 -(void)setUrl:(NSString *)url SuccessBlock:(LoadSuccess)block{
+    self.image = nil;
+    if(url==nil || url.length == 0)
+        return;
+    
     CLImageManager *manager = [CLImageManager shareImageManager];
     
     // Remove in progress downloader from queue
     [manager cancelForDelegate:self];
-    self.image = nil;
     [manager downloadWithUrl:url ManagerDelegate:self];
     
     objc_setAssociatedObject(self, &SuccessBlockKey, block, OBJC_ASSOCIATION_COPY);
@@ -52,6 +60,9 @@ static char SuccessBlockKey;
 
 
 -(void)setUrl:(NSString *)url LoadingBlock:(LoadingImageBlock)block{
+    self.image = nil;
+    if(url==nil || url.length == 0)
+        return;
     
     CLImageManager *manager = [CLImageManager shareImageManager];
     
