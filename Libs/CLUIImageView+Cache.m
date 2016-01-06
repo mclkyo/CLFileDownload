@@ -49,12 +49,13 @@ static char SuccessBlockKey;
         return;
     
     CLImageManager *manager = [CLImageManager shareImageManager];
+    objc_setAssociatedObject(self, &SuccessBlockKey, block, OBJC_ASSOCIATION_COPY);
     
     // Remove in progress downloader from queue
     [manager cancelForDelegate:self];
     [manager downloadWithUrl:url ManagerDelegate:self];
     
-    objc_setAssociatedObject(self, &SuccessBlockKey, block, OBJC_ASSOCIATION_COPY);
+
     
 }
 
@@ -65,12 +66,13 @@ static char SuccessBlockKey;
         return;
     
     CLImageManager *manager = [CLImageManager shareImageManager];
+    objc_setAssociatedObject(self, &LoadingBlockKey, block, OBJC_ASSOCIATION_COPY);
     
     // Remove in progress downloader from queue
     [manager cancelForDelegate:self];
     [manager downloadWithUrl:url ManagerDelegate:self];
     
-    objc_setAssociatedObject(self, &LoadingBlockKey, block, OBJC_ASSOCIATION_COPY);
+
 }
 
 

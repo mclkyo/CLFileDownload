@@ -8,12 +8,27 @@
 
 #import "SingleImageViewController.h"
 #import "CLUIImageView+Cache.h"
+#import "CLUrl+Cache.h"
 
 @interface SingleImageViewController ()
 
 @end
 
 @implementation SingleImageViewController
+
+
+-(void)viewWillAppear:(BOOL)animated{
+//    NSString *url = @"http://mm.xmeise.com/uploads/allimg/150926/1-1509261I003.jpg";
+//    [url LoadImage:^(UIImage *image){
+//        
+//        NSLog(@"%f %f",image.size.width,image.size.height);
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            self.ToDownloadImage.image = image;
+//            [self.view setNeedsDisplay];
+//        });
+//    }];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -24,17 +39,30 @@
 //        //[self.ToDownloadImage updateConstraintsIfNeeded];
 //        
 //    }];
+//
     
+    __weak SingleImageViewController *WeakSelf = self;
     
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *diskCachePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"CLFileCache"];
-    NSString *picUrl = [diskCachePath stringByAppendingPathComponent:@"1.jpg"];
-    
-    [self.ToDownloadImage setUrl:picUrl SuccessBlock:^{
-        //[self.ToDownloadImage updateConstraintsIfNeeded];
-        
+    NSString *url = @"http://mm.xmeise.com/uploads/allimg/150926/1-1509261I003.jpg";
+    [url LoadImage:^(UIImage *image){
+        NSLog(@"%@ %f %f",image, image.size.width,image.size.height);
+        WeakSelf.ToDownloadImage.image = image;
     }];
     
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+//    NSString *diskCachePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"CLFileCache"];
+//    NSString *picUrl = [diskCachePath stringByAppendingPathComponent:@"1.jpg"];
+//    
+//    [self.ToDownloadImage setUrl:picUrl SuccessBlock:^{
+//        //[self.ToDownloadImage updateConstraintsIfNeeded];
+//        
+//    }];
+    
+}
+
+
+-(void)dealloc{
+    NSLog(@"dealloc");
 }
 
 - (void)didReceiveMemoryWarning {

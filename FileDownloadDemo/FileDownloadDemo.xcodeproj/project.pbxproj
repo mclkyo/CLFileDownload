@@ -24,6 +24,7 @@
 		03DFB6171BB8D4D100570D39 /* MultiImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DFB6161BB8D4D100570D39 /* MultiImageViewController.m */; };
 		03DFB61A1BB8D8D300570D39 /* WavPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DFB6191BB8D8D300570D39 /* WavPlayViewController.m */; };
 		03DFB61C1BB8DB0A00570D39 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DFB61B1BB8DB0A00570D39 /* AVFoundation.framework */; };
+		03E99D9B1C3D05FF00EEAEE2 /* CLUrl+Cache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E99D9A1C3D05FF00EEAEE2 /* CLUrl+Cache.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,8 @@
 		03DFB6181BB8D8D300570D39 /* WavPlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WavPlayViewController.h; sourceTree = "<group>"; };
 		03DFB6191BB8D8D300570D39 /* WavPlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WavPlayViewController.m; sourceTree = "<group>"; };
 		03DFB61B1BB8DB0A00570D39 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		03E99D991C3D05FF00EEAEE2 /* CLUrl+Cache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLUrl+Cache.h"; sourceTree = "<group>"; };
+		03E99D9A1C3D05FF00EEAEE2 /* CLUrl+Cache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLUrl+Cache.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +183,8 @@
 				03DFB6091BB8D10E00570D39 /* CLUIImageView+Cache.m */,
 				03DFB60A1BB8D10E00570D39 /* FileData.h */,
 				03DFB60B1BB8D10E00570D39 /* FileData.m */,
+				03E99D991C3D05FF00EEAEE2 /* CLUrl+Cache.h */,
+				03E99D9A1C3D05FF00EEAEE2 /* CLUrl+Cache.m */,
 			);
 			name = Libs;
 			path = ../../Libs;
@@ -289,6 +294,7 @@
 				03DFB5DB1BB8D0FC00570D39 /* AppDelegate.m in Sources */,
 				03DFB6101BB8D10E00570D39 /* CLUIImageView+Cache.m in Sources */,
 				03DFB60E1BB8D10E00570D39 /* CLFileManager.m in Sources */,
+				03E99D9B1C3D05FF00EEAEE2 /* CLUrl+Cache.m in Sources */,
 				03DFB60F1BB8D10E00570D39 /* CLImageManager.m in Sources */,
 				03DFB61A1BB8D8D300570D39 /* WavPlayViewController.m in Sources */,
 				03DFB5D81BB8D0FC00570D39 /* main.m in Sources */,
