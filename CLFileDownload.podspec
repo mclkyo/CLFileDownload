@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|  
   s.name             = "CLFileDownload" 
-  s.version          = "0.4.3"  
+  s.version          = "0.4.4"  
   s.summary          = "Download Image or File With Cache "  
   s.description  = <<-DESC
 			Download Web Image,first will cache in memoney and disk 
@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.homepage         = "https://github.com/mclkyo/CLFileDownload"  
   s.license          = "MIT"  
   s.author           = { "mclkyo" => "mclkyo@gmail.com" }  
-  s.source           = { :git => "https://github.com/mclkyo/CLFileDownload.git", :tag => "0.4.3"}  
+  s.source           = { :git => "https://github.com/mclkyo/CLFileDownload.git", :tag => "0.4.4"}  
   s.platform     = :ios, "7.0"  
   s.requires_arc = true  
   s.source_files = "Libs/*.{h,m}"

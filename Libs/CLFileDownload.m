@@ -21,7 +21,7 @@
 
 -(void)Start{
     if(self.DownloadTimeOut==0){
-        self.DownloadTimeOut = 5;
+        self.DownloadTimeOut = 60;
     }
     
     NSURL *RequestUrl = [NSURL URLWithString:url];
